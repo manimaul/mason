@@ -101,6 +101,15 @@ mason_use(<package name> VERSION <package version> HEADER_ONLY)
 
 Note: Leave out `HEADER_ONLY` if the package is a [pre-compiled library](https://github.com/mapbox/cpp/blob/master/glossary.md#precompiled-library). You can see if a package is `HEADER_ONLY` by looking inside the `script.sh` for `MASON_HEADER_ONLY=true` like https://github.com/mapbox/mason/blob/68871660b74023234fa96d482898c820a55bd4bf/scripts/geometry/0.9.0/script.sh#L5
 
+### Add alias and env vars to ~/.profile or ~/.bash_profile 
+
+```bash
+
+alias mason="~/source/madrona/mason-madrona/mason"
+export MASON_CURL_ARGS=""
+export MASON_ROOT=~/mason_packages
+
+```
 
 ## Usage
 
