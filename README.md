@@ -6,7 +6,7 @@ Mason does all its work locally inside `./mason_packages` and therefore does not
 
 Mason works on both OS X and Linux.
 
-[![Build Status](https://travis-ci.org/mapbox/mason.svg?branch=master)](https://travis-ci.org/mapbox/mason)
+[![Build Status](https://travis-ci.org/manimaul/mason-madrona.svg?branch=master)](https://travis-ci.org/manimaul/mason-madrona)
 
 ### Goals
 
@@ -32,26 +32,7 @@ Mason is unlike all of the above package managers because:
 
 ## Installation
 
-There are three recommended ways to install mason: via curl, via a submodule, or via bundling `mason.cmake`
-
-#### Curl install
-
-To install mason locally:
-
-```sh
-mkdir ./mason
-curl -sSfL https://github.com/mapbox/mason/archive/v0.15.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=./mason
-```
-
-Then you can use the `mason` command like: `./mason/mason install <package> <version>`
-
-To install mason globally (to /tmp):
-
-```sh
-curl -sSfL https://github.com/mapbox/mason/archive/v0.15.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=/tmp
-```
-
-Then you can use the `mason` command like: `/tmp/mason install <package> <version>`
+There are two recommended ways to install mason: via a submodule, or via bundling `mason.cmake`
 
 #### Submodule
 
@@ -60,7 +41,7 @@ Mason can also be added a submodule to your repository. This is helpful for othe
 Optionally a convention when using submodules, is to place the submodule at a path starting with `.` to make the directory hidden to most file browsers. If you want your mason folder hidden then make sure to include the final part of the following command `.mason/` so your submodule path has the leading `.` instead of just being `mason/`.
 
 ```bash
-git submodule add git@github.com:mapbox/mason.git .mason/
+git submodule add git@github.com:manimaul/mason-madrona.git .mason/
 ```
 
 This will append a few lines to your `.gitmodules` file. Make sure to change the `url` parameter to `https` instead of `git@github` ssh protocol.
@@ -68,7 +49,7 @@ This will append a few lines to your `.gitmodules` file. Make sure to change the
 ```
 [submodule ".mason"]
     path = .mason
-    url = https://github.com/mapbox/mason.git
+    url = git@github.com:manimaul/mason-madrona.git
 ```
 
 Update your `Makefile` to point to the mason scripts and provide an installation script for the necessary dependencies. The following installs two Mason packages with the `make mason_packages` command.
@@ -86,11 +67,11 @@ mason_packages: $(MASON)
 
 #### mason.cmake
 
-Copy the https://raw.githubusercontent.com/mapbox/mason/master/mason.cmake into your cmake project. A common convention is to place it at `<your project>/cmake/mason`
+Copy the https://raw.githubusercontent.com/manimaul/madrona-mason/master/mason.cmake into your cmake project. A common convention is to place it at `<your project>/cmake/mason`
 
 ```
 mkdir cmake
-wget -O cmake/mason.cmake https://raw.githubusercontent.com/mapbox/mason/master/mason.cmake
+wget -O cmake/mason.cmake https://raw.githubusercontent.com/manimaul/mason-madrona/master/mason.cmake
 ````
 
 Then in your `CmakeLists.txt` install packages like:
@@ -99,7 +80,7 @@ Then in your `CmakeLists.txt` install packages like:
 mason_use(<package name> VERSION <package version> HEADER_ONLY)
 ```
 
-Note: Leave out `HEADER_ONLY` if the package is a [pre-compiled library](https://github.com/mapbox/cpp/blob/master/glossary.md#precompiled-library). You can see if a package is `HEADER_ONLY` by looking inside the `script.sh` for `MASON_HEADER_ONLY=true` like https://github.com/mapbox/mason/blob/68871660b74023234fa96d482898c820a55bd4bf/scripts/geometry/0.9.0/script.sh#L5
+Note: Leave out `HEADER_ONLY` if the package is a [pre-compiled library](https://github.com/mapbox/cpp/blob/master/glossary.md#precompiled-library). You can see if a package is `HEADER_ONLY` by looking inside the `script.sh` for `MASON_HEADER_ONLY=true` like https://github.com/manimaul/madrona-mason/blob/68871660b74023234fa96d482898c820a55bd4bf/scripts/geometry/0.9.0/script.sh#L5
 
 ### Add alias and env vars to ~/.profile or ~/.bash_profile 
 
@@ -242,7 +223,7 @@ For details see https://docs.travis-ci.com/user/triggering-builds and https://gi
 
 ## Writing build scripts
 
-Each version of each package has its own directory in `scripts/${package}/${version}`, e.g. [`scripts/libpng/1.6.28`](https://github.com/mapbox/mason/tree/master/scripts/libpng/1.6.28).
+Each version of each package has its own directory in `scripts/${package}/${version}`, e.g. [`scripts/libpng/1.6.28`](https://github.com/manimaul/madrona-mason/tree/master/scripts/libpng/1.6.28).
 
 Below are details on ways to create packages for:
 
