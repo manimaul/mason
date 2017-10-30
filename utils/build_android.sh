@@ -15,5 +15,6 @@ do
     export MASON_ANDROID_ABI=${i}
     echo ${MASON_PLATFORM}
     echo ${MASON_ANDROID_ABI}
-    sh mason build ${MASON_NAME} ${MASON_VERSION}
+    mason build ${MASON_NAME} ${MASON_VERSION}
+    mason publish ${MASON_NAME} ${MASON_VERSION}
 done

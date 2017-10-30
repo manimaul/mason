@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 set -eu
 set -o pipefail
 # set -x
@@ -658,6 +660,27 @@ function mason_list_existing {
 }
 
 function mason_publish {
+    if [ -n "${SSH_USERNAME:-}" ] && [ -n "${SSH_HOST:-}" ]; then
+        mkdir -p `dirname ${MASON_BINARIES_PATH}`
+        cd "${MASON_PREFIX}"
+        rm -rf "${MASON_BINARIES_PATH}"
+        tar czf "${MASON_BINARIES_PATH}" .
+        (cd "${MASON_ROOT}/.binaries" && ls -lh "${MASON_BINARIES}")
+        mason_step "Uploading binary package via ssh to ${SSH_HOST}..."
+        batch() {
+            BIN_PATH=$(dirname ${MASON_BINARIES})
+            IFS='/' read -ra ADDR <<< "${BIN_PATH}"
+            for PATH_SEGMENT in "${ADDR[@]}"; do
+                echo -mkdir ${PATH_SEGMENT}
+                echo cd ${PATH_SEGMENT}
+            done
+            echo put ${MASON_BINARIES_PATH}
+            echo quit
+        }
+        sftp -b <(batch) ${SSH_USERNAME}@${SSH_HOST}:${MASON_BUCKET}
+        exit 1
+    fi
+
     local CONTENT_TYPE DATE MD5 SIGNATURE
     if [ ! ${MASON_HEADER_ONLY:-false} = true ] && [ ! -z ${MASON_LIB_FILE:-} ] && [ ! -f "${MASON_PREFIX}/${MASON_LIB_FILE}" ]; then
         mason_error "Required library file ${MASON_PREFIX}/${MASON_LIB_FILE} doesn't exist."
