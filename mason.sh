@@ -678,7 +678,7 @@ function mason_publish {
             echo quit
         }
         sftp -b <(batch) ${SSH_USERNAME}@${SSH_HOST}:${MASON_BUCKET}
-        exit 1
+        return 0
     fi
 
     local CONTENT_TYPE DATE MD5 SIGNATURE
